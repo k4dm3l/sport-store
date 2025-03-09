@@ -94,7 +94,7 @@ npm run lint    # Revisar código
 ---
 
 ## 🚀 Comandos
-**Para desarrollo (con hot-reload y base de datos MongoDB y Redis):**
+**Para desarrollo (base de datos MongoDB y Redis):**
 ```bash
 # Borra todo y reinicia desde cero (¡cuidado con los datos locales!)
 docker compose down -v && docker compose up --build
