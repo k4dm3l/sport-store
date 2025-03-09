@@ -5,7 +5,7 @@
 Imagina que tienes que guardar datos de productos deportivos (zapatillas, pelotas, etc.) que pueden ser *muy diferentes* entre sí. **MongoDB** nos permite: 
 
 - **Flexibilidad**: Si un día una camiseta necesita tallas (S, M, L) y una pelota necesita peso (300g, 500g), MongoDB nos permite realizar ajustes. ¡Sin esquemas rígidos!
-- **Velocidad en operacion I/O**: "¿Cuántos productos hay en total?" o "¿Qué categoría tiene más productos?" son operaciones que en conjunto con una buena estructura permite ser respondidas muy rapido.
+- **Velocidad en operacion I/O**: "¿Cuántos productos hay en total?" o "¿Qué categoría tiene más productos?" son operaciones que en conjunto con una buena estructura permite ser resueltas muy rapido.
 - **Stock en tiempo real**: Si 100 usuarios compran al mismo tiempo, MongoDB permite manejar de manera concurrente multiples peticiones *sin romper nada*.
 - **Escala fácil**: Si mañana tienes 1 millón de productos, MongoDB escala horizontalmente (más servidores) en lugar de verticalmente (servidores más grandes).
 
