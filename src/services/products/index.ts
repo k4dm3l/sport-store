@@ -161,7 +161,7 @@ export const productServiceFactory = ({
       const currentProduct = await productsDAL.getProductById(objectProductId, session);
       
       if (!currentProduct) {
-        throw new NotFoundError('service: product not found')
+        throw new NotFoundError('service: product not found');
       }
 
       const currentProductWithoutId = omit(currentProduct, '_id');

@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import { MongoClient } from 'mongodb';
-import env from '@root/configs'
+import env from '@root/configs';
 import { productsDALFactory } from '@root/dal/products';
 import { IProduct } from '@root/shared/interfaces/product';
 import { ForbiddenError } from '@root/shared/errors';
@@ -53,7 +53,7 @@ const generateFakeProduct = (categories: string[], brands: string[]): Omit<IProd
       mongoDB.dropCollection(DBCollections.USERS).catch(() => {})
     ]);
 
-    logger.info(`🎉 Database restored succesfully! \n`);
+    logger.info('🎉 Database restored succesfully! \n');
     
     logger.info('🏃‍♂️  Starting products population...');
 

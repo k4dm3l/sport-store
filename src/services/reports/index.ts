@@ -1,7 +1,7 @@
-import { ICategoriesDAL } from "@root/dal/categories";
+import { ICategoriesDAL } from '@root/dal/categories';
 import { IReportsDAL } from '@root/dal/reports';
-import { BusinessError } from "@root/shared/errors";
-import { IReport } from "@root/shared/interfaces/report";
+import { BusinessError } from '@root/shared/errors';
+import { IReport } from '@root/shared/interfaces/report';
 
 export interface IReportService {
   getMetrics: (topCategories: number) => Promise<IReport>

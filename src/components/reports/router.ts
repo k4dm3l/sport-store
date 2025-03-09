@@ -18,7 +18,7 @@ export const reportRouterFactory = ({
     passport.authenticate('jwt', { session: false }),
     schemaValidation(generalReportSchema, 'query'),
     asyncHandler(handlerGetReportGeneralController),
-  )
+  );
 
   return router;
 };

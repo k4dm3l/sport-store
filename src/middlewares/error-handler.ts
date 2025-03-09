@@ -40,7 +40,7 @@ export const errorFormatter = (error: any) => {
     boomError = boom.internal('internal server error');
   }
 
-  boomError = boom.internal('internal server error')
+  boomError = boom.internal('internal server error');
   return boomError;
 };
 

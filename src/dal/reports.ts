@@ -1,6 +1,6 @@
-import { Db } from "mongodb";
-import { IReport } from "@root/shared/interfaces/report";
-import { DBCollections } from "@root/shared/enums/collections";
+import { Db } from 'mongodb';
+import { IReport } from '@root/shared/interfaces/report';
+import { DBCollections } from '@root/shared/enums/collections';
 
 export interface IReportsDAL {
   getMetrics: () => Promise<IReport | null>;
