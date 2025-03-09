@@ -23,7 +23,7 @@ import { categoriesDALFactory } from '@root/dal/categories';
 import { reportsServiceFactory } from '@root/services/reports';
 import { authServiceFactory } from '@root/services/auth';
 import { handlerGetReportGeneralControllerFactory } from '@root/components/reports/controllers/handler-get-general';
-import { handlerSignInFactory } from '@root/components/auth/controllers/handler-sign-in';
+import { handlerSignInControllerFactory } from '@root/components/auth/controllers/handler-sign-in';
 import { authRouterFactory } from './components/auth/router';
 import { swaggerRouter } from '@root/docs/swagger-ui';
 
@@ -104,7 +104,7 @@ export const server = async ({
       responseService,
     });
 
-    const handlerSignIn = handlerSignInFactory({
+    const handlerSignInController = handlerSignInControllerFactory({
       authService,
       responseService,
     });
@@ -130,7 +130,7 @@ export const server = async ({
     });
 
     const authRouter = authRouterFactory({
-      handlerSignIn,
+      handlerSignInController,
     });
 
     app.use(swaggerRouter);

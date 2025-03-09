@@ -2,7 +2,7 @@ import { Request, Response, RequestHandler } from 'express';
 import { IAuthService } from '@root/services/auth';
 import { IResponseService } from '@root/libs/response';
 
-export const handlerSignInFactory = ({
+export const handlerSignInControllerFactory = ({
   authService,
   responseService,
 }: {

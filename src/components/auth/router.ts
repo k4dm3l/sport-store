@@ -5,16 +5,16 @@ import { schemaValidation } from '@root/middlewares/schema-handler';
 import { signInSchema } from '@root/schemas/auth';
 
 export const authRouterFactory = ({
-  handlerSignIn,
+  handlerSignInController,
 }: {
-  handlerSignIn: RequestHandler;
+  handlerSignInController: RequestHandler;
 }): Router => {
   const router = Router();
 
   router.post(
     '/signin',
     schemaValidation(signInSchema),
-    asyncHandler(handlerSignIn),
+    asyncHandler(handlerSignInController),
   );
 
   return router;
