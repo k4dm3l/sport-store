@@ -1,0 +1,10 @@
+# Modificar el .dockerignore para NO ignorar el script
+**/node_modules
+.git
+dist
+*.log
+Dockerfile
+docker-compose.yml
+*.md
+**/.DS_Store
+!wait-for-db.sh  # Permitir copiar el script

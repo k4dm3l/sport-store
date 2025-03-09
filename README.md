@@ -10,7 +10,7 @@ Imagina que tienes que guardar datos de productos deportivos (zapatillas, pelota
 - **Escala fácil**: Si mañana tienes 1 millón de productos, MongoDB escala horizontalmente (más servidores) en lugar de verticalmente (servidores más grandes).
 
 ## 🔒 **Transacciones y Operaciones Atómicas:**  
-Imagina esto: 50 usuarios comprando las últimas zapatillas al mismo tiempo. ¿Cómo evitamos que el stock se descuadre? **¡MongoDB tiene superpoderes para esto!**  
+Imagina esto: 50 usuarios comprando las últimas zapatillas al mismo tiempo. ¿Cómo evitamos que el stock se descuadre? **¡MongoDB tiene caracteristicas para manejar esto!**  
 
 - **🔄 Transacciones tipo "Todo o Nada":**  
   Si creas/actualizas/borras un producto:  
@@ -83,3 +83,19 @@ npm run populate-db
 
 # Otros comandos útiles:
 npm run lint    # Revisar código
+```
+
+# 🐳 Iniciar el Proyecto con Docker (Desarrollo Local)
+
+## 📋 Prerrequisitos
+- Docker instalado ([Descargar Docker](https://www.docker.com/get-started))
+- Docker Compose (viene incluido en Docker Desktop)
+
+---
+
+## 🚀 Comandos
+**Para desarrollo (con hot-reload y base de datos MongoDB y Redis):**
+```bash
+# Borra todo y reinicia desde cero (¡cuidado con los datos locales!)
+docker compose down -v && docker compose up --build
+```
