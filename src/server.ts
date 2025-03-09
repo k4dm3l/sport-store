@@ -1,6 +1,7 @@
 import { Application } from 'express';
 import { Logger } from 'winston';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import { createClient, RedisClientType } from 'redis';
 import passport from 'passport';
 import env from '@root/configs';
 import { IUtils } from '@root/libs/utils';
@@ -26,6 +27,7 @@ import { handlerGetReportGeneralControllerFactory } from '@root/components/repor
 import { handlerSignInControllerFactory } from '@root/components/auth/controllers/handler-sign-in';
 import { authRouterFactory } from './components/auth/router';
 import { swaggerRouter } from '@root/docs/swagger-ui';
+import { redisCacheFactory } from './libs/redis-cache';
 
 export const server = async ({
   app,
@@ -34,7 +36,7 @@ export const server = async ({
 }: {
   app: Application;
   logger: Logger;
-  utils: IUtils
+  utils: IUtils;
 }): Promise<void> => {
   try {
     const port = utils.normalizeNumber(env.PORT);
@@ -54,8 +56,16 @@ export const server = async ({
 
     logger.info(`server: connection to db ${mongoDB.databaseName}`);
 
+    const redisClient: RedisClientType = createClient({
+      url: env.REDIS_URI,
+    });
+
+    redisClient.on('error', (err) => logger.error('server: redis', err));
+    await redisClient.connect();
+
     // Utils
     const responseService = responseFormatFactory();
+    const redisCache = redisCacheFactory({ redisClient });
 
     // DAL inits
     const productsDAL = productsDALFactory(mongoDB);
@@ -64,7 +74,7 @@ export const server = async ({
     const categoriesDAL = categoriesDALFactory(mongoDB);
 
     // Services inits
-    const productsService = productServiceFactory({ productsDAL, mongoClient });
+    const productsService = productServiceFactory({ productsDAL, mongoClient, redisCache, utils });
     const reportsService = reportsServiceFactory({ categoriesDAL, reportsDAL });
     const authService = authServiceFactory({ usersDAL });
 

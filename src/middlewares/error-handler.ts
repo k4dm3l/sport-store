@@ -20,6 +20,7 @@ export const notFoundErrorHandler = (req: Request, res: Response) => {
 
 export const errorFormatter = (error: any) => {
   let boomError;
+  logger.error(error);
   if (error instanceof BusinessError) {
     boomError = boom.badRequest(error.message);
   }

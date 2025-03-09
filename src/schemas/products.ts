@@ -20,9 +20,9 @@ export const productByIdSchema = joi.object().keys({
 
 export const getProductByCategorySchema = joi.object().keys({
   name: joi.string().uppercase().trim().required(),
+  limit: joi.number().integer().positive().required(),
   direction: joi.string().trim().valid('next', 'previous')
     .when('reference', { is: joi.exist(), then: joi.required() }),
-  limit: joi.number().integer().positive().required(),
   reference: joi.string().regex(/^[0-9a-fA-F]{24}$/)
     .trim()
     .messages({
