@@ -1,0 +1,344 @@
+# src/docs/swagger/products.yml
+paths:
+  /products/{id}/details:
+    get:
+      tags:
+        - Products
+      summary: Get a product by ID
+      description: Returns a single product by its MongoDB ObjectID
+      security:
+        - jwt: []
+      parameters:
+        - name: id
+          in: path
+          description: MongoDB ObjectID of the product
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{24}$'
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Invalid ID format
+        401:
+          description: Unauthorized - Invalid JWT Token
+        404:
+          description: Product not found
+        500:
+          description: Internal server error
+  /products/category:
+    get:
+      tags:
+        - Products
+      summary: Get products by category with cursor-based pagination
+      description: |
+        Retrieve paginated products by category using cursor-based navigation.
+        Supports bidirectional pagination with next/previous cursors.
+      security:
+        - jwt: []
+      parameters:
+        - name: name
+          in: query
+          description: Category name in uppercase
+          required: true
+          schema:
+            type: string
+            example: "FOOTBALL"
+        - name: direction
+          in: query
+          description: Pagination direction (required when using reference)
+          schema:
+            type: string
+            enum: [next, previous]
+            example: "next"
+        - name: limit
+          in: query
+          description: Number of items per page (min 1)
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
+        - name: reference
+          in: query
+          description: MongoDB ObjectID cursor for pagination
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{24}$'
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryProductsResponse'
+        422:
+          description: Invalid parameters (invalid ID format or missing direction with reference)
+        401:
+          description: Unauthorized - Invalid JWT Token
+        404:
+          description: Category not found or no products available
+        500:
+          description: Internal server error
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get paginated list of products
+      description: Returns a paginated list of products with search capabilities
+      security:
+        - jwt: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
+        - name: search
+          in: query
+          description: Search term to filter products
+          required: false
+          schema:
+            type: string
+            example: "ball"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsResponse'
+        400:
+          description: Invalid input parameters
+        401:
+          description: Unauthorized - Invalid JWT Token
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      description: Creates a new product and updates related metrics
+      security:
+        - jwt: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        201:
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Invalid input data
+        401:
+          description: Unauthorized - Invalid JWT Token
+        500:
+          description: Internal server error
+  /products/{id}:
+    delete:
+      tags:
+        - Products
+      summary: Delete a product
+      description: |
+        Delete a product by ID and update related metrics.
+        This action will decrease the total products count, stock and pricing in reports,
+        and update the category count.
+      security:
+        - jwt: []
+      parameters:
+        - name: id
+          in: path
+          description: MongoDB ObjectID of the product to delete
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{24}$'
+            example: "507f1f77bcf86cd799439011"
+      responses:
+        204:
+          description: Product deleted successfully
+        400:
+          description: Invalid ID format
+        401:
+          description: Unauthorized - Invalid JWT Token
+        404:
+          description: Product not found
+        500:
+          description: Internal server error
+    put:
+      tags:
+        - Products
+      summary: Update a product
+      description: Update an existing product and adjust related metrics
+      security:
+        - jwt: []
+      parameters:
+        - name: id
+          in: path
+          description: MongoDB ObjectID of the product to update
+          required: true
+          schema:
+            type: string
+            pattern: '^[0-9a-fA-F]{24}$'
+            example: "507f1f77bcf86cd799439011"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        200:
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        400:
+          description: Invalid input data or ID format
+        401:
+          description: Unauthorized - Invalid JWT Token
+        404:
+          description: Product not found
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    CategoryProductsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        meta:
+          type: object
+          properties:
+            next:
+              type: string
+              nullable: true
+              description: Cursor for next page
+              example: "507f1f77bcf86cd799439011"
+            previous:
+              type: string
+              nullable: true
+              description: Cursor for previous page
+              example: null
+          required:
+            - next
+            - previous
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: objectid
+          example: "507f1f77bcf86cd799439011"
+        name:
+          type: string
+          example: "Official Soccer Ball"
+        category:
+          type: string
+          example: "Fútbol"
+        price:
+          type: number
+          format: float
+          example: 29.99
+        stock:
+          type: integer
+          example: 100
+        brand:
+          type: string
+          example: "SportsPro"
+      required:
+        - _id
+        - name
+        - category
+        - price
+        - stock
+        - brand
+
+    PaginationMeta:
+      type: object
+      properties:
+        next:
+          type: integer
+          nullable: true
+          example: 2
+        previous:
+          type: integer
+          nullable: true
+          example: null
+        page:
+          type: integer
+          example: 1
+        limit:
+          type: integer
+          example: 10
+        pages:
+          type: integer
+          example: 5
+        total:
+          type: integer
+          example: 50
+
+    ProductsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    ProductInput:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Official Basketball"
+        category:
+          type: string
+          example: "BASKETBALL"
+        price:
+          type: number
+          format: float
+          example: 49.99
+        stock:
+          type: integer
+          example: 75
+        brand:
+          type: string
+          example: "SPORTS PRO"
+      required:
+        - name
+        - category
+        - price
+        - stock
+        - brand

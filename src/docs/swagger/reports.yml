@@ -1,0 +1,48 @@
+# src/docs/swagger/reports.yml
+paths:
+  /reports/general:
+    get:
+      tags:
+        - Reports
+      summary: Get general metrics
+      description: Return total producs, stock, top category, average pricing
+      security:
+        - jwt: []
+      parameters:
+        - name: topCategories
+          in: query
+          description: Number of top category to show
+          schema:
+            type: integer
+            minimum: 1
+            # maximum: 20
+            # default: 5
+          required: true
+      responses:
+        200:
+          description: Succesfull retrieve metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportMetrics'
+        401:
+          description: Unauthorized - Invalid JWT Token
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    ReportMetricsResponse:
+      type: object
+      properties:
+        total_products:
+          type: integer
+          example: 1000
+        total_stock:
+          type: integer
+          example: 50000
+        categories:
+          type: array
+          items:
+            type: string
+          example: ["Fútbol", "Baloncesto", "Tenis"]
