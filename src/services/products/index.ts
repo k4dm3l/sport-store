@@ -7,7 +7,7 @@ import { BusinessError, NotFoundError, ServerError } from '@root/shared/errors';
 import { IUtils } from '@root/libs/utils';
 import { ICache } from '@root/libs/redis-cache';
 import { CachePrefix } from '@root/shared/enums/cache-prefix';
-import env from '@root/configs'
+import env from '@root/configs';
 
 export interface IProductService {
   createProduct: (product: Partial<IProduct>) => Promise<IProduct>;

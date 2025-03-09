@@ -1,4 +1,4 @@
-import { CachePrefix } from "@root/shared/enums/cache-prefix";
+import { CachePrefix } from '@root/shared/enums/cache-prefix';
 
 export interface IUtils {
   normalizeNumber: (port: any) => number | undefined;

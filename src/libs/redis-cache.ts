@@ -1,4 +1,4 @@
-import { RedisClientType } from "redis";
+import { RedisClientType } from 'redis';
 
 export interface ICache {
   get(key: string): Promise<any | null>;
